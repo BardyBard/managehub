@@ -1,0 +1,127 @@
+body {
+  padding: 40px 10px;
+  background-color: #eee;
+}
+
+@media (min-width: 991.98px) {
+  main {
+    padding-left: 240px;
+  }
+}
+
+.listing-reg h1 {
+  text-align: center;
+  margin: 0 0 2rem;
+}
+
+/* css for registration form and errors*/
+.form-registration {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-registration {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form-registration input {
+  width: 100%;
+  margin: 0px 0 10px;
+}
+
+.form-registration .btn {
+  flex: 1 0 100%;
+}
+
+.my-errors {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  color: #333;
+  font-size: 1.2rem;
+  display: table;
+}
+
+.my-errors li {
+  margin: 0 0 1rem;
+}
+
+.my-errors li:before {
+  content: "! Error : ";
+  color: #f00;
+  font-weight: bold;
+}
+
+/* Styles for listing table */
+.listing-table {
+  width: 100%;
+}
+
+.listing-table th,
+.listing-table td {
+  padding: 10px;
+  border-bottom: 1px solid #666;
+}
+
+.listing-table th {
+  background: #000;
+  color: #fff;
+}
+
+.listing-table td:first-child,
+.listing-table th:first-child {
+  border-right: 1px solid #666;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 58px 0 0;
+  /* Height of navbar */
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  width: 240px;
+  z-index: 600;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+
+.sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Scrollable contents if viewport is shorter than content. */
+}
+
+.container {
+  border-bottom: 1px solid gray;
+}
+
+.item {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.category {
+  font-size: 14px;
+}
+
+.price {
+  color: #0000ff;
+}

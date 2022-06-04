@@ -30,31 +30,48 @@ router.get('/classes/physics', (req, res) => {
     });
 });
 
-router.post('/classes/:class', (req, res) => {
-    registration.find().then((registrations) => {
-        const message = {
-            from: 'game.io999@gmail.com',
-            to: 'a2005magnus@gmail.com',
-            subject: 'Managehub Notification',
-            html: application.formatHtmlBody(req.body, registrations)
-        };
+router.get('/classes/upload', (req, res) => {
+    res.render('classes/upload',{
+        layout: 'index'
+    });
+})
 
-        transport.sendMail(message, (err, info) => {
-            if(err){
-                console.log(err);
-            } else{
-                console.log(info);
-            }
-        })
-
-        res.render('classes/physics', {
-            layout: 'index',
-            submitted: true
-        })
-      })
-        .catch(() => { res.send('Sorry! Something went wrong.'); });
-
-
+router.post('/classes/upload', (req, res) => {
+    console.log(req.body);
+    const register = new registration(req.body);
+      register.save()
+        .then(() => { res.send('Thank you for your registration!'); })
+        .catch((err) => {
+          console.log(err);
+          res.send('Sorry! Something went wrong.');
+        });
 });
+
+// router.post('/classes/:class', (req, res) => {
+//     registration.find().then((registrations) => {
+//         const message = {
+//             from: 'game.io999@gmail.com',
+//             to: 'a2005magnus@gmail.com',
+//             subject: 'Managehub Notification',
+//             html: application.formatHtmlBody(req.body, registrations)
+//         };
+
+//         transport.sendMail(message, (err, info) => {
+//             if(err){
+//                 console.log(err);
+//             } else{
+//                 console.log(info);
+//             }
+//         })
+
+//         res.render('classes/physics', {
+//             layout: 'index',
+//             submitted: true
+//         })
+//       })
+//         .catch(() => { res.send('Sorry! Something went wrong.'); });
+
+
+// });
 
 module.exports = router;

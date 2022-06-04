@@ -9,10 +9,21 @@ const registrationSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  type: {
+  category: {
     type: Integer,
     trim: true,
-  }
+  },
+  description: {
+    type: String,
+    trim: true,
+  },
+  date: {
+    type: Date,
+    trim: true,
+  },
+  attachments:{
+    type: File
+  },
 });
 
 module.exports = mongoose.model('registration', registrationSchema);

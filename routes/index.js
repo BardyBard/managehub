@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 
 const router = express.Router();
-const registration = require('../models/registration');
+const Tasks = require('../models/tasks');
 
 
 router.get('/', (req, res) => {
@@ -42,18 +42,19 @@ router.post('/',
 );
 */
 
-//#region registrations
-router.get('/registrations', (req, res) => {
-  registration.find().then((registrations) => {
-    //res.render('index', { title: 'Listing registrations', registrations });
-    console.log(registrations)
-    res.render('registrations',{
-      layout: 'index',
-      data: registrations
-    })
+// router.get('/tasks', (req, res) => {
+//   Tasks.find().lean().then((tasks) => {
+//     res.render('tasks',{
+//       layout: 'index',
+//       data: tasks
+//     })
+//   })
+//     .catch(() => { res.send('Sorry! Something went wrong.'); });
+// });
 
-  })
-    .catch(() => { res.send('Sorry! Something went wrong.'); });
+router.get('*', (req, res) => {
+  res.status(404).render('error', {
+    layout: 'index' });
 });
 
 module.exports = router;

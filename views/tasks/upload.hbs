@@ -1,0 +1,50 @@
+<div class="mt-3">
+    <h1 class="text-center">Add a task</h1>
+    <div class="bg-warning text-dark p-5">
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <div class="form-row p-2">
+                <div class="form-group col-md-12">
+                    <label for="inputTitle">Title</label>
+                    <input name="title" type="text" class="form-control" id="inputTitle" required>
+                </div>
+            </div>
+            <div class="form-row p-2">
+                <div class="form-group col-md-2">
+                    <label for="inputSubject">Subject</label>
+                    <select name="subject" id="inputSubject" class="form-control">
+                        <option selected>General</option>
+                        {{#each classes}}
+                        <option>{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputCategory">Category</label>
+                    <select name="category" id="inputCategory" class="form-control">
+                        <option selected>Homework</option>
+                        <option>Assignment</option>
+                        <option>Test</option>
+                        <option>Internal Assesment</option>
+                        <option>Extended Essay</option>
+                        <option>Project</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputDate">Due Date</label>
+                    <input name="date" type="text" class="form-control" id="inputDate" data-provide="datepicker">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputDescription">Description</label>
+                    <textarea name="descript" class="form-control" id="inputDescription" rows="4"></textarea>
+                </div>
+            </div>
+            <div class="form-row p-2">
+                <div class="form-group custom-file col-md-6">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <input name="files" type="file" class="custom-file-input" id="customFile" required>
+                </div>
+            </div>
+            <button class="btn btn-primary mt-3">Upload</button>
+        </form>
+    </div>
+</div>

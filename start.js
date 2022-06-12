@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
+}).catch((err) => { console.log(`Database not found.`) });
 
 mongoose.connection
   .on('open', () => {
@@ -13,8 +13,8 @@ mongoose.connection
   })
   .on('error', (err) => {
     console.log(`Connection error: ${err.message}`);
-  });
+  })
 
 const server = app.listen(3000, () => {
-  console.log(`Express is running on port ${server.address().port}`);
+  console.log(`Express is running on port ${server.address().port}`)
 });

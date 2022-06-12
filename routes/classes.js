@@ -1,77 +1,54 @@
 const express = require('express');
-const { check, validationResult } = require('express-validator');
+//const { check, validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const router = express.Router();
-const application = require('../application.js');
 const nodemailer = require('nodemailer');
-const registration = require('../models/registration');
+const Tasks = require('../models/tasks');
+const Classes = require('../models/classes');
+const bodyParser = require('body-parser');
+const uuid = require('uuid').v4;
+const path = require('path');
+const multer = require('multer');
+const { attachment } = require('express/lib/response');
+
 require('dotenv').config();
 
-let transport = nodemailer.createTransport({
-    /*host: 'smtp.gmail.com',
-    port: '587',
-    secure: true,*/
-    service: 'gmail',
-    auth: {
-        user: 'game.io9999@gmail.com',
-        pass: `${process.env.EMAILPASS}`,
-    }
-});
-
 router.get('/classes', (req, res) => {
-    res.render('classes', {
-        layout: 'index'
-    });
+    Classes.find().lean().then((classes) => {
+        res.render('classes', {
+            layout: 'index',
+            data: classes
+        })
+    }).catch(() => { res.send('Sorry! Something went wrong.'); });
 });
 
-router.get('/classes/physics', (req, res) => {
-    res.render('classes/physics', {
-        layout: 'index'
-    });
+router.get('/classes/:class', (req, res) => {
+    Tasks.find({ subject: req.params.class }).lean().then((tasks) => {
+        res.render('classes/class', {
+            layout: 'index',
+            clas: req.params.class,
+            data: tasks
+        })
+    }).catch((err) => {
+        res.status(404).render('error', {
+            layout: 'index'
+        });
+    })
 });
 
-router.get('/classes/upload', (req, res) => {
-    res.render('classes/upload',{
+router.get('/classes/create', (req, res) => {
+    res.render('classes/create', {
         layout: 'index'
     });
 })
 
-router.post('/classes/upload', (req, res) => {
-    console.log(req.body);
-    const register = new registration(req.body);
-      register.save()
-        .then(() => { res.send('Thank you for your registration!'); })
-        .catch((err) => {
-          console.log(err);
-          res.send('Sorry! Something went wrong.');
-        });
-});
-
-// router.post('/classes/:class', (req, res) => {
-//     registration.find().then((registrations) => {
-//         const message = {
-//             from: 'game.io999@gmail.com',
-//             to: 'a2005magnus@gmail.com',
-//             subject: 'Managehub Notification',
-//             html: application.formatHtmlBody(req.body, registrations)
-//         };
-
-//         transport.sendMail(message, (err, info) => {
-//             if(err){
-//                 console.log(err);
-//             } else{
-//                 console.log(info);
-//             }
-//         })
-
-//         res.render('classes/physics', {
-//             layout: 'index',
-//             submitted: true
-//         })
-//       })
-//         .catch(() => { res.send('Sorry! Something went wrong.'); });
-
-
-// });
+router.post('/classes/create', (req, res) => {
+    console.log(req.body)
+    Classes.create({
+        name: req.body.name
+    }).then(() => {
+        return res.redirect('/classes');
+    })
+})
 
 module.exports = router;

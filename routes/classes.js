@@ -22,6 +22,27 @@ router.get('/classes', (req, res) => {
     }).catch(() => { res.send('Sorry! Something went wrong.'); });
 });
 
+router.get('/classes/create', (req, res) => {
+    res.render('classes/create', {
+        layout: 'index'
+    });
+})
+
+router.post('/classes/create', (req, res) => {
+    console.log(req.body)
+    Classes.create({
+        name: req.body.name
+    }).then(() => {
+        Classes.find().lean().then((classes) => {
+            res.render('classes', {
+                layout: 'index',
+                data: classes,
+                created: true
+            })
+        }).catch(() => { res.send('Sorry! Something went wrong.'); });
+    })
+})
+
 router.get('/classes/:class', (req, res) => {
     Tasks.find({ subject: req.params.class }).lean().then((tasks) => {
         res.render('classes/class', {
@@ -36,19 +57,19 @@ router.get('/classes/:class', (req, res) => {
     })
 });
 
-router.get('/classes/create', (req, res) => {
-    res.render('classes/create', {
-        layout: 'index'
-    });
-})
-
-router.post('/classes/create', (req, res) => {
-    console.log(req.body)
-    Classes.create({
-        name: req.body.name
-    }).then(() => {
-        return res.redirect('/classes');
+router.get('/classes/delete/:class', async (req, res) => {
+    await Classes.deleteOne({ name: req.params.class }).catch((err) => {
+        res.status(404).render('error', {
+            layout: 'index'
+        });
     })
-})
+    Classes.find().lean().then((classes) => {
+        res.render('classes', {
+            layout: 'index',
+            data: classes,
+            deleted: true
+        })
+    }).catch(() => { res.send('Sorry! Something went wrong.'); });
+});
 
 module.exports = router;

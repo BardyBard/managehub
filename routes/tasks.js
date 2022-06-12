@@ -56,8 +56,7 @@ router.post('/tasks/upload', upload.single('files'), async (req, res) => {
             data: tasks,
             submitted: true
         })
-    })
-        .catch(() => { res.send('Sorry! Something went wrong.'); });
+    }).catch(() => { res.send('Sorry! Something went wrong.'); });
 });
 
 
@@ -73,4 +72,20 @@ router.get('/tasks/:id', (req, res) => {
         });
     })
 })
+
+router.get('/tasks/delete/:id', async (req, res) => {
+    await Tasks.deleteOne({ _id: req.params.id }).catch((err) => {
+        res.status(404).render('error', {
+            layout: 'index'
+        });
+    })
+    Tasks.find().lean().then((tasks) => {
+        res.render('tasks', {
+            layout: 'index',
+            data: tasks,
+            deleted: true
+        })
+    }).catch(() => { res.send('Sorry! Something went wrong.'); });
+});
+
 module.exports = router;

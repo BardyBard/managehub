@@ -1,4 +1,5 @@
 module.exports = {
+  //make datestamp legible
   formatDate: function (date) {
     if (date) { return date.toDateString(); }
 

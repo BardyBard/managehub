@@ -1,1 +1,36 @@
-Some content
+{{!-- make a large card for welcome text--}}
+<div class="container">
+    <div class="card bg-warning text-dark text-center m-4">
+        <div class="card-body">
+            <h1 class="card-title">Welcome to the HUB!</h1>
+        </div>
+    </div>
+</div>
+
+{{!-- make small cards to navigate website--}}
+<div class="card-deck p-4" >
+    <div class="card bg-primary" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h2 class="card-text">Tasks</h2>
+            <a href="/tasks" class="stretched-link"></a>
+        </div>
+    </div>
+    <div class="card bg-primary" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h2 class="card-text">Classes</h2>
+            <a href="/classes" class="stretched-link"></a>
+        </div>
+    </div>
+    <div class="card bg-primary" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h2 class="card-text">Sign in</h2>
+            <a href="/account/signin" class="stretched-link"></a>
+        </div>
+    </div>
+    <div class="card bg-primary" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h2 class="card-text">Register</h2>
+            <a href="/account/register" class="stretclink"></a>
+        </div>
+    </div>
+</div>

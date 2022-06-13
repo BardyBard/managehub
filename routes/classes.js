@@ -1,22 +1,17 @@
 const express = require('express');
-//const { check, validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const router = express.Router();
-const nodemailer = require('nodemailer');
+
+//require database scheemas
 const Tasks = require('../models/tasks');
 const Classes = require('../models/classes');
-const bodyParser = require('body-parser');
-const uuid = require('uuid').v4;
-const path = require('path');
-const multer = require('multer');
-const { attachment } = require('express/lib/response');
-
-require('dotenv').config();
 
 router.get('/classes', (req, res) => {
+    //retrieve classes from database and pass through as json
     Classes.find().lean().then((classes) => {
         res.render('classes', {
             layout: 'index',
+            //pass through json as variable data
             data: classes
         })
     }).catch(() => { res.send('Sorry! Something went wrong.'); });
@@ -29,14 +24,16 @@ router.get('/classes/create', (req, res) => {
 })
 
 router.post('/classes/create', (req, res) => {
-    console.log(req.body)
+    //create new database entry with form data
     Classes.create({
         name: req.body.name
     }).then(() => {
+        //fake redirect to list with all classes
         Classes.find().lean().then((classes) => {
             res.render('classes', {
                 layout: 'index',
                 data: classes,
+                //pass through variable to show confirmation
                 created: true
             })
         }).catch(() => { res.send('Sorry! Something went wrong.'); });
@@ -44,10 +41,13 @@ router.post('/classes/create', (req, res) => {
 })
 
 router.get('/classes/:class', (req, res) => {
+    //retrieve class information from databse
     Tasks.find({ subject: req.params.class }).lean().then((tasks) => {
         res.render('classes/class', {
             layout: 'index',
+            //pass through class name for title
             clas: req.params.class,
+            //pass through tasks for said class
             data: tasks
         })
     }).catch((err) => {
@@ -58,15 +58,18 @@ router.get('/classes/:class', (req, res) => {
 });
 
 router.get('/classes/delete/:class', async (req, res) => {
+    //delete from database
     await Classes.deleteOne({ name: req.params.class }).catch((err) => {
         res.status(404).render('error', {
             layout: 'index'
         });
     })
+    //fake redirect to class view
     Classes.find().lean().then((classes) => {
         res.render('classes', {
             layout: 'index',
             data: classes,
+            //pass through variable to show confirmation
             deleted: true
         })
     }).catch(() => { res.send('Sorry! Something went wrong.'); });

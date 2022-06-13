@@ -12,31 +12,39 @@ router.get('/classes', (req, res) => {
         res.render('classes', {
             layout: 'index',
             //pass through json as variable data
-            data: classes
+            data: classes,
+            //pass through any alerts
+            created: req.session.success,
+            deleted: req.session.successDel,
+            //pass through user
+            username: req.session.username,
+            admin: req.session.admin
         })
+        //reset all alerts
+        req.session.success = false;
+        req.session.successDel = false;
     }).catch(() => { res.send('Sorry! Something went wrong.'); });
 });
 
 router.get('/classes/create', (req, res) => {
     res.render('classes/create', {
-        layout: 'index'
+        layout: 'index',
+        //pass through user
+        username: req.session.username,
+        admin: req.session.admin
     });
 })
 
 router.post('/classes/create', (req, res) => {
+    //send error if not priveleged
+    if (!req.session.admin) return res.redirect('/error');
     //create new database entry with form data
     Classes.create({
         name: req.body.name
     }).then(() => {
-        //fake redirect to list with all classes
-        Classes.find().lean().then((classes) => {
-            res.render('classes', {
-                layout: 'index',
-                data: classes,
-                //pass through variable to show confirmation
-                created: true
-            })
-        }).catch(() => { res.send('Sorry! Something went wrong.'); });
+        //set success notification to true and redirect to full list
+        req.session.success = true
+        res.redirect('/classes');
     })
 })
 
@@ -48,7 +56,10 @@ router.get('/classes/:class', (req, res) => {
             //pass through class name for title
             clas: req.params.class,
             //pass through tasks for said class
-            data: tasks
+            data: tasks,
+            //pass through user
+            username: req.session.username,
+            admin: req.session.admin
         })
     }).catch((err) => {
         res.status(404).render('error', {
@@ -58,21 +69,18 @@ router.get('/classes/:class', (req, res) => {
 });
 
 router.get('/classes/delete/:class', async (req, res) => {
+    //send error if not priveleged
+    if (!req.session.admin) return res.redirect('/error');
+
     //delete from database
     await Classes.deleteOne({ name: req.params.class }).catch((err) => {
         res.status(404).render('error', {
             layout: 'index'
         });
     })
-    //fake redirect to class view
-    Classes.find().lean().then((classes) => {
-        res.render('classes', {
-            layout: 'index',
-            data: classes,
-            //pass through variable to show confirmation
-            deleted: true
-        })
-    }).catch(() => { res.send('Sorry! Something went wrong.'); });
+    //set success notification to true and redirect to full list
+    req.session.successDel = true
+    res.redirect('/classes');
 });
 
 module.exports = router;

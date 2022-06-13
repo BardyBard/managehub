@@ -13,9 +13,13 @@
 
 
 <div class="container">
+    {{!-- only add button if privleged for action --}}
+    {{#if admin}}
     <div class="col mt-3">
         <a class="btn btn-warning btn-lg mt-3" href="/classes/create" role="button">Add New Class</a>
     </div>
+    {{/if}}
+
     <div class="card-columns mt-3 justify-content-center">
         {{!-- make card for each class --}}
         <div class="col">

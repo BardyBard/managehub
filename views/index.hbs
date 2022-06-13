@@ -1,3 +1,16 @@
+{{!-- show some conformations of actions upon being redicted --}}
+{{#if loggedin}}
+<div class="alert alert-success">
+    <strong>Successfully logged in!</strong>
+</div>
+{{/if}}
+
+{{#if loggedout}}
+<div class="alert alert-warning">
+    <strong>Successfully logged out!</strong>
+</div>
+{{/if}}
+
 {{!-- make a large card for welcome text--}}
 <div class="container">
     <div class="card bg-warning text-dark text-center m-4">
@@ -8,7 +21,7 @@
 </div>
 
 {{!-- make small cards to navigate website--}}
-<div class="card-deck p-4" >
+<div class="card-deck p-4">
     <div class="card bg-primary" style="width: 18rem;">
         <div class="card-body text-center">
             <h2 class="card-text">Tasks</h2>
@@ -21,6 +34,9 @@
             <a href="/classes" class="stretched-link"></a>
         </div>
     </div>
+
+    {{!-- remove login options if logged in --}}
+    {{#unless username}}
     <div class="card bg-primary" style="width: 18rem;">
         <div class="card-body text-center">
             <h2 class="card-text">Sign in</h2>
@@ -30,7 +46,32 @@
     <div class="card bg-primary" style="width: 18rem;">
         <div class="card-body text-center">
             <h2 class="card-text">Register</h2>
-            <a href="/account/register" class="stretclink"></a>
+            <a href="/account/register" class="stretched-link"></a>
         </div>
     </div>
+    {{/unless}}
+    {{#if username}}
+    <div class="card bg-primary" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h2 class="card-text">Logout</h2>
+            <a href="/account/logout" class="stretched-link"></a>
+        </div>
+    </div>
+    {{/if}}
+
+    {{!-- add upload buttons if admin --}}
+    {{#if admin}}
+    <div class="card bg-primary" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h2 class="card-text">Add Class</h2>
+            <a href="/classes/create" class="stretched-link"></a>
+        </div>
+    </div>
+    <div class="card bg-primary" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h2 class="card-text">Add Task</h2>
+            <a href="/tasks/upload" class="stretched-link"></a>
+        </div>
+    </div>
+    {{/if}}
 </div>

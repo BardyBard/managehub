@@ -23,12 +23,23 @@
           Account
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Sign In</a>
-          <a class="dropdown-item" href="#">Register</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Settings</a>
+          {{!-- hide logins if logged in --}}
+          {{#unless username}}
+          <a class="dropdown-item" href="/account/signin">Sign In</a>
+          <a class="dropdown-item" href="/account/register">Register</a>
+          {{/unless}}
+          {{!-- <div class="dropdown-divider"></div> --}}
+          {{!-- <a class="dropdown-item" href="#">Settings</a> --}}
+          {{#if username}}
+          <a class="dropdown-item" href="/account/logout">Logout</a>
+          {{/if}}
         </div>
       </li>
     </ul>
+    {{#if username}}
+    <span class="navbar-text">
+      Loggen in as: {{username}}!
+    </span>
+    {{/if}}
   </div>
 </nav>

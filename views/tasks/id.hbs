@@ -4,5 +4,8 @@
   <hr class="my-4">
   <p>{{data.subject}} | {{data.category}}<br>{{formatDate data.date}}</p>
   <a class="btn btn-info btn-lg" href="/uploads/{{data.attachments}}" role="button">Download Attachment {{data.attachments}}</a>
+  {{!-- only add button if privleged for action --}}
+  {{#if admin}}
   <a class="btn btn-danger" href="/tasks/delete/{{data._id}}" role="button">Delete Task</a>
+  {{/if}}
 </div>

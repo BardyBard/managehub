@@ -41,32 +41,40 @@ router.get('/tasks', (req, res) => {
         res.render('tasks', {
             layout: 'index',
             //pass through json as variable data
-            data: tasks
+            data: tasks,
+            //pass through any alerts
+            submitted: req.session.success,
+            deleted: req.session.successDel,
+            //pass through user
+            username: req.session.username,
+            admin: req.session.admin
         })
+        //reset all alerts
+        req.session.success = false;
+        req.session.successDel = false;
     }).catch(() => { res.send('Sorry! Something went wrong.'); });
 });
 
 router.get('/tasks/upload', (req, res) => {
+    //send error if not priveleged
+    if (!req.session.admin) return res.redirect('/error');
     //get all classes and pass then through as a json object
     Classes.find().lean().then((classes) => {
         res.render('tasks/upload', {
             layout: 'index',
-            classes: classes
+            classes: classes,
+            //pass through user
+            username: req.session.username,
+            admin: req.session.admin
         });
     });
 });
 
 router.post('/tasks/upload', upload.single('files'), async (req, res) => {
     //upload task with ------^^^^^^^^^^^^^^^^^^^^^^
-    //"fake redirect to see all tasks"
-    Tasks.find().lean().then((tasks) => {
-        res.render('tasks', {
-            layout: 'index',
-            data: tasks,
-            //pass through variable to show confirmation
-            submitted: true
-        })
-    }).catch(() => { res.send('Sorry! Something went wrong.'); });
+    //set success notification to true and redirect to full list
+    req.session.success = true
+    res.redirect('/tasks');
 });
 
 
@@ -75,7 +83,9 @@ router.get('/tasks/:id', (req, res) => {
     Tasks.findById(req.params.id).lean().then((task) => {
         res.render('tasks/id', {
             layout: 'index',
-            data: task
+            data: task,
+            username: req.session.username,
+            admin: req.session.admin
         })
     }).catch((err) => {
         res.status(404).render('error', {
@@ -85,21 +95,18 @@ router.get('/tasks/:id', (req, res) => {
 })
 
 router.get('/tasks/delete/:id', async (req, res) => {
+    //send error if not priveleged
+    if (!req.session.admin) return res.redirect('/error');
+    
     //delete task
     await Tasks.deleteOne({ _id: req.params.id }).catch((err) => {
         res.status(404).render('error', {
             layout: 'index'
         });
     })
-    //fake redirect to list of tasks
-    Tasks.find().lean().then((tasks) => {
-        res.render('tasks', {
-            layout: 'index',
-            data: tasks,
-            //pass through variable to show confirmation
-            deleted: true
-        })
-    }).catch(() => { res.send('Sorry! Something went wrong.'); });
+    //set success notification to true and redirect to full list
+    req.session.successDel = true
+    res.redirect('/tasks');
 });
 
 module.exports = router;

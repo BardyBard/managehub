@@ -13,3 +13,6 @@ https://www.mongodb.com/try/download/community
 
 Make a .env file and add a line
 ```DATABASE={link}```
+
+Run to start the server
+```node ./start.js```

@@ -1,5 +1,5 @@
 # MANAGEHUB
-This is a computer science project by Alex and Gaberiel.
+This is a computer science project by Alex.
 
 The purpose of managehub is to be paired with managebac for a better student experience
 

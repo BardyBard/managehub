@@ -16,3 +16,6 @@ https://www.mongodb.com/try/download/community
 
 ### Run to start the server
 ```node ./start.js```
+
+Connect to:
+`localhost:3000`
